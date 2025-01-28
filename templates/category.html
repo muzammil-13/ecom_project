@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block metadescription %}
+    {% if category %}
+        {{category.description|truncatewords:155}}
+    {% else %}
+        Welcome to StoreFont Tech, Where you can buy Latest Smartphones & Cool Gadgets...
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+    {% if category %}
+        {{category.name}} - StoreFont Tech
+    {% else %}
+        Latest Products - StoreFont Tech
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Category Header Section -->
+    {% if category %}
+        <div class="category-header text-center my-5">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb justify-content-center">
+                    <li class="breadcrumb-item"><a href="{% url 'shop:allProdCat' %}">Home</a></li>
+                    <li class="breadcrumb-item active">{{category.name}}</li>
+                </ol>
+            </nav>
+            <div class="category-banner">
+                <img class="img-fluid rounded shadow" src="{{category.image.url}}" alt="{{category.name}}">
+            </div>
+            <h1 class="display-4 mt-4">{{category.name}}</h1>
+            <p class="lead">{{category.description}}</p>
+        </div>
+    {% else %}
+        <!-- Homepage Header -->
+        <div class="hero-section text-center my-5">
+            <img class="img-fluid rounded shadow-lg" src="{% static 'img/banner.png' %}" alt="StoreFont Tech Banner">
+            <h1 class="display-4 mt-4">Latest Tech Products</h1>
+            <p class="lead">Your trusted technology partner for smartphones and cutting-edge gadgets.</p>
+        </div>
+    {% endif %}
+
+    <!-- Products Grid -->
+    <div class="row g-4">
+        {% for product in products.object_list %}
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card product-card h-100 shadow-sm">
+                <div class="card-img-wrapper">
+                    <a href="{{product.get_url}}">
+                        <img src="{{product.image.url}}" class="card-img-top p-3" alt="{{product.name}}">
+                    </a>
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{product.name}}</h5>
+                    <p class="price">₹{{product.price}}</p>
+                    <a href="{{product.get_url}}" class="btn btn-outline-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if products.paginator.num_pages > 1 %}
+    <nav aria-label="Page navigation" class="my-5">
+        <ul class="pagination justify-content-center">
+            {% for pg in products.paginator.page_range %}
+            <li class="page-item {% if products.number == pg %}active{% endif %}">
+                <a class="page-link" href="?page={{pg}}">{{pg}}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

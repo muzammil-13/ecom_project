@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block metadescription %}
+    Your Shopping Cart - Review your items and proceed to checkout at StoreFont Tech
+{% endblock %}
+
+{% block title %}
+    Shopping Cart - StoreFont Tech
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Empty Cart State -->
+    {% if not cart_items %}
+    <div class="empty-cart text-center my-5">
+        <i class="fas fa-shopping-cart fa-4x text-muted mb-4"></i>
+        <h1 class="display-4">Your shopping cart is empty!</h1>
+        <p class="lead">Discover our amazing products and start shopping</p>
+        <a href="{% url 'shop:allProdCat' %}" class="btn btn-primary btn-lg mt-3">
+            <i class="fas fa-store"></i> Continue Shopping
+        </a>
+    </div>
+
+    <!-- Cart with Items -->
+    {% else %}
+    <div class="cart-container my-5">
+        <h1 class="text-center mb-5">Your Shopping Cart</h1>
+        
+        <div class="row">
+            <!-- Cart Items -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white">
+                        <h4 class="mb-0">Cart Items</h4>
+                    </div>
+                    <div class="card-body">
+                        {% for cart_item in cart_items %}
+                        <div class="cart-item d-flex align-items-center py-3 {% if not forloop.last %}border-bottom{% endif %}">
+                            <div class="cart-item-image">
+                                <a href="{{cart_item.product.get_url}}">
+                                    <img src="{{cart_item.product.image.url}}" alt="{{cart_item.product.name}}" 
+                                         class="img-fluid rounded">
+                                </a>
+                            </div>
+                            <div class="cart-item-details flex-grow-1 px-4">
+                                <h5>{{cart_item.product.name}}</h5>
+                                <p class="text-muted mb-1">SKU: {{cart_item.product.id}}</p>
+                                <div class="price">₹{{cart_item.product.price}}</div>
+                            </div>
+                            <div class="cart-item-quantity text-center">
+                                <div class="quantity-controls">
+                                    {% if cart_item.quantity < cart_item.product.stock %}
+                                    <a href="{% url 'cart:add_cart' cart_item.product.id %}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-plus"></i>
+                                    </a>
+                                    {% endif %}
+                                    <span class="mx-2">{{cart_item.quantity}}</span>
+                                    <a href="{% url 'cart:cart_remove' cart_item.product.id %}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-minus"></i>
+                                    </a>
+                                </div>
+                                <a href="{% url 'cart:full_remove' cart_item.product.id %}" class="btn btn-link text-danger">
+                                    <i class="fas fa-trash"></i> Remove
+                                </a>
+                            </div>
+                            <div class="cart-item-total px-4">
+                                <strong>₹{{cart_item.sub_total}}</strong>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white">
+                        <h4 class="mb-0">Order Summary</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Subtotal</span>
+                            <strong>₹{{total}}</strong>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Total</span>
+                            <strong class="text-primary">₹{{total}}</strong>
+                        </div>
+
+                        <!-- Update the checkout button in the Order Summary section -->
+                        <a href="{% url 'cart:payment' %}" class="btn btn-primary btn-lg w-100 mb-3">
+                            <i class="fas fa-lock"></i> Proceed to Checkout
+                        </a>
+                        
+                        
+                        <a href="{% url 'shop:allProdCat' %}" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-arrow-left"></i> Continue Shopping
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

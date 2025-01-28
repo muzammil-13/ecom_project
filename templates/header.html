@@ -1,0 +1,38 @@
+{% load static %}
+<header class="site-header">
+  <div class="container">
+      <div class="row align-items-center py-3">
+          <!-- Logo Section -->
+          <div class="col-md-4 text-center text-md-start">
+              <a href="{% url 'shop:allProdCat' %}" class="logo-link">
+                  <img src="{% static 'img/logo.png' %}" alt="StoreFont Tech Logo" class="logo-image">
+              </a>
+          </div>
+          
+          <!-- Website Title -->
+          <div class="col-md-4 text-center">
+              <div class="site-title">
+                  <h1 class="brand-name">
+                      <span class="title-store">Store</span><span class="title-font">Front</span>
+                      <span class="title-tech">Tech</span>
+                  </h1>
+                  <div class="brand-tagline">Your Tech Shopping Destination</div>
+              </div>
+          </div>
+          
+          <!-- Quick Actions -->
+          <div class="col-md-4">
+              <div class="header-actions text-center text-md-end">
+                  <a href="/account" class="action-link">
+                      <i class="fas fa-user"></i>
+                      <span>Account</span>
+                  </a>
+                  <a href="/cart" class="action-link ms-4">
+                      <i class="fas fa-shopping-cart"></i>
+                      <span>Cart</span>
+                  </a>
+              </div>
+          </div>
+      </div>
+  </div>
+</header>

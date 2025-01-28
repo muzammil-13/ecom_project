@@ -1,0 +1,69 @@
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container">
+      <!-- Mobile Toggle Button -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+          <i class="fas fa-bars"></i>
+      </button>
+
+      <!-- Main Navigation -->
+      <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav me-auto">
+              <!-- Home -->
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'shop:allProdCat' %}">
+                      <i class="fas fa-home"></i> Home
+                  </a>
+              </li>
+
+              <!-- Categories Dropdown -->
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                      <i class="fas fa-th-list"></i> Categories
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="{% url 'shop:allProdCat' %}">All Products</a></li>
+                      <div class="dropdown-divider"></div>
+                      {% for cat in links %}
+                      <li><a class="dropdown-item" href="{{cat.get_url}}">{{cat.name}}</a></li>
+                      {% endfor %}
+                  </ul>
+              </li>
+
+              <!-- Deals -->
+              <li class="nav-item">
+                  <a class="nav-link" href="#">
+                      <i class="fas fa-tag"></i> Deals
+                  </a>
+              </li>
+
+              <!-- New Arrivals -->
+              <li class="nav-item">
+                  <a class="nav-link" href="#">
+                      <i class="fas fa-star"></i> New Arrivals
+                  </a>
+              </li>
+          </ul>
+
+          <!-- Cart Icon -->
+          {% if item_count > 0 %}
+          <div class="nav-cart">
+              <a class="nav-link" href="{% url 'cart:cart_detail' %}">
+                  <i class="fas fa-shopping-cart"></i>
+                  <span class="cart-badge">{{item_count}}</span>
+              </a>
+          </div>
+          {% endif %}
+
+          <!-- Search Form -->
+          <form class="d-flex search-form" action="{% url 'search_app:SearchResult' %}" method="get">
+              {% csrf_token %}
+              <div class="input-group">
+                  <input class="form-control" type="search" name="q" placeholder="Search products...">
+                  <button class="btn btn-search" type="submit">
+                      <i class="fas fa-search"></i>
+                  </button>
+              </div>
+          </form>
+      </div>
+  </div>
+</nav>

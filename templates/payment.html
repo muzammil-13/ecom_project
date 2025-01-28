@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Payment - StoreFont Tech{% endblock %}
+
+{% block content %}
+<div class="container payment-container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow">
+                <div class="card-header bg-white">
+                    <h3 class="text-center mb-0">Payment Details</h3>
+                </div>
+                <div class="card-body">
+                    <form id="paymentForm" method="POST">
+                        {% csrf_token %}
+                        <!-- Card Holder -->
+                        <div class="mb-4">
+                            <label class="form-label">Card Holder Name</label>
+                            <input type="text" class="form-control" required pattern="[A-Za-z ]{3,}" title="Please enter a valid name">
+                        </div>
+
+                        <!-- Card Number -->
+                        <div class="mb-4">
+                            <label class="form-label">Card Number</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" required pattern="[0-9]{16}" title="Please enter a valid 16-digit card number">
+                                <span class="input-group-text">
+                                    <i class="fab fa-cc-visa"></i>
+                                    <i class="fab fa-cc-mastercard ms-2"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Expiry and CVV -->
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <label class="form-label">Expiry Date</label>
+                                <input type="text" class="form-control" placeholder="MM/YY" required pattern="(0[1-9]|1[0-2])\/([0-9]{2})" title="Please enter a valid date (MM/YY)">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">CVV</label>
+                                <input type="password" class="form-control" required pattern="[0-9]{3}" title="Please enter a valid 3-digit CVV">
+                            </div>
+                        </div>
+
+                        <!-- Amount -->
+                        <div class="mb-4">
+                            <label class="form-label">Amount to Pay</label>
+                            <div class="form-control bg-light fw-bold">₹{{total}}</div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary w-100 py-2" id="payButton">
+                            <i class="fas fa-lock me-2"></i>Pay Securely
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" data-bs-backdrop="static" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center py-4">
+                <div class="success-animation">
+                    <i class="fas fa-check-circle text-success display-1 mb-3"></i>
+                </div>
+                <h3>Payment Successful!</h3>
+                <p>Your order has been placed successfully.</p>
+                <div class="redirect-message mt-3">
+                    <small class="text-muted">Redirecting to homepage in <span id="countdown">3</span> seconds...</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('paymentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Disable submit button
+    document.getElementById('payButton').disabled = true;
+    
+    // Show success modal
+    const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+    successModal.show();
+    
+    // Countdown timer
+    let timeLeft = 3;
+    const countdownElement = document.getElementById('countdown');
+    const countdownTimer = setInterval(() => {
+        timeLeft--;
+        countdownElement.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(countdownTimer);
+            window.location.href = "{% url 'shop:allProdCat' %}";
+        }
+    }, 1000);
+});
+</script>
+{% endblock %}
