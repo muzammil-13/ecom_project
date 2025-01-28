@@ -87,10 +87,11 @@ storefront_project/
 ## Usage
 
 1. Access admin panel at `/admin` to manage products and categories
-2. Browse products by category
-3. Use search functionality to find specific products
-4. Add products to cart and manage quantities
-5. View cart details and proceed to checkout
+2. Visit `/shop` to browse the main storefront
+3. Browse products by category
+4. Use search functionality to find specific products
+5. Add products to cart and manage quantities
+6. View cart details and proceed to checkout
 
 ## Contributing
 
